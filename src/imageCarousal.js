@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const data = [
   "https://kidlingoo.com/wp-content/uploads/flowers_name_in_english.jpg",
@@ -11,27 +11,45 @@ const data = [
 const ImageCarousal = () => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
+  const handlePrevious = () => {
+    setActiveImageIndex(
+      !activeImageIndex ? data.length - 1 : activeImageIndex - 1
+    );
+  };
 
-  const handlePreviousClick = () => {
-    if(activeImageIndex === 0) setActiveImageIndex(data.length -1);
-    else setActiveImageIndex(activeImageIndex -1)
-    }
-
-    const handleNextClick =() => {
-        setActiveImageIndex((activeImageIndex +1)% data.length);
-    }
-
+  const handleNext = () => {
+    setActiveImageIndex((activeImageIndex + 1) % data.length);
+  };
+  useEffect(() => {
+    const timer= setTimeout( () => {
+        handleNext();
+    }, 5000);
+    return () => {
+        clearTimeout(timer);
+    };
+    }, [activeImageIndex]);
+ 
   return (
     <div className="flex justify-center">
-      <button className="font-bold p-4 m-10" onClick={handlePreviousClick}>Previous</button>
-      <img
-        src={data[activeImageIndex]}
-        className="w-[700px]"
-        alt="flowers images"
-      ></img>
-      <button className="font-bold p-4 m-10" onClick={handleNextClick}>Next</button>
+      <button className="font-bold m-4 p-7 h-[200px]" onClick={handlePrevious}>
+        Previous
+      </button>
+      {data.map((url, i) => (
+        <img
+        key={i}
+        src={url}
+          className={
+            "w-[600px] h-[500px]  object-contain "  +
+            (activeImageIndex === i ? "block" : "hidden")
+          }
+          alt="flowers"
+    /> 
+        ))}
+    
+      <button className=" font-bold m-4 p-7 h-[200px]" onClick={handleNext}>
+        Next
+      </button>
     </div>
   );
 };
-
 export default ImageCarousal;
