@@ -1,16 +1,24 @@
 
+import { createContext } from 'react';
 import './App.css';
-import Heading from './Heading';
-import ImageCarousal from './imageCarousal';
+import ChildA from './childA';
 
-function App() {
-  const country = "India";
-  return (
-    <div className="App">
-      <Heading  country ={country}/> 
-      <ImageCarousal />
-    </div>
-  );
+  const data= createContext();
+  const data1=createContext();
+
+function App () {
+     
+  const name= "khushi "
+  const gender="female"
+     return (
+        <> 
+        <data.Provider value={name}>
+            <data1.Provider value={gender}>
+       <ChildA />   
+            </data1.Provider>
+        </data.Provider>
+        </>
+     )
 }
-
-export default App;
+ export default App
+ export {data,data1}
